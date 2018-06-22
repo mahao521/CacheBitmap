@@ -1,9 +1,16 @@
 package com.bitmap.cachebitmap;
 
+import android.content.Intent;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.bitmap.cachebitmap.handler.MultiActivity;
+import com.bitmap.cachebitmap.view.ViewActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,5 +30,22 @@ public class MainActivity extends AppCompatActivity {
         ImageCache.getInstance().init(this, Environment.getExternalStorageDirectory()+"/mahao");
         ListView listView = findViewById(R.id.list_view);
         listView.setAdapter(new MyAdapter(this));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position % 5 == 1){
+                    Intent intent = new Intent(MainActivity.this,MultiActivity.class);
+                    startActivity(intent);
+                }else if(position % 5 == 2){
+                    Intent intent = new Intent(MainActivity.this,ViewActivity.class);
+                    startActivity(intent);
+                }else if(position % 5 == 3){
+
+                }else if(position % 5 == 4){
+
+                }
+            }
+        });
     }
+
 }
