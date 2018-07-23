@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.bitmap.mylibrary.BuildConfig;
+import com.bitmap.mylibrary.utils.CommonUtils;
+import com.bitmap.mylibrary.utils.Utils;
+import com.bitmap.skin.SkinManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -25,12 +30,37 @@ import java.util.List;
 public class ClassLoader extends Application {
 
     private static final String TAG = "ClassLoader";
-    private String app_name;
-    private String app_version;
-    private final static float UI_WIDTH = 1080;
-    private final static float UI_HEIGHT = 1920;
-    private final static int DENSITY_INCH = 5;
-    private final static float BIG_SCREEN_FACTOR = 0.2f;
+    public String APP_NAME;
+    public  String APP_VERSION;
+    public final static float UI_WIDTH = 1080;
+    public final static float UI_HEIGHT = 1920;
+    public final static int DENSITY_INCH = 5;
+    public final static float BIG_SCREEN_FACTOR = 0.2f;
+
+    public static String IMEL;
+    public static String PACK_NAME;
+    public static String VERSION_CODE;
+    public static String VERSION_NAME;
+    public static String CHANNEL_ID;
+    public static String ANDROID_ID;
+    public static String SERIAL_NO;
+
+    private static ClassLoader sInstance;
+
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        PACK_NAME = CommonUtils.getProcessName();
+        VERSION_NAME = Utils.getHasDotVersion(ClassLoader.getsInstance());
+        CHANNEL_ID = CommonUtils.getMetaData(ClassLoader.getsInstance(),"WOCAO_CHANNEL");
+        IMEL = Utils.getDeviceIMEI(ClassLoader.getsInstance());
+        ANDROID_ID = Utils.getDeviceAndroidId(ClassLoader.getsInstance());
+        SERIAL_NO = Utils.getSerialNo();
+
+        //换肤
+        SkinManager.init(this);
+    }
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -38,6 +68,8 @@ public class ClassLoader extends Application {
         getMetaData();
         //屏幕适配
         setMetrics();
+        //log日志打印
+      //  LogUtil.initLog(base);
     }
 
     /**
@@ -70,10 +102,10 @@ public class ClassLoader extends Application {
             Bundle metaData = applicationInfo.metaData;
             if(null != metaData){
                 if(metaData.containsKey("app_name")){
-                    app_name = metaData.getString("app_name");
+                    APP_NAME = metaData.getString("app_name");
                 }
                 if(metaData.containsKey("app_version")){
-                    app_version = metaData.getString("app_version");
+                    APP_VERSION = metaData.getString("app_version");
                 }
             }
         } catch (Exception e) {
@@ -153,6 +185,14 @@ public class ClassLoader extends Application {
             }
         }
         throw new NoSuchFieldException("method " + name + "with parameters " + Arrays.asList(parameterTypes).toString());
+    }
+
+    public static ClassLoader getsInstance(){
+        return sInstance;
+    }
+
+    protected ClassLoader(){
+        sInstance = this;
     }
 
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CacheBitmap</string>
+    <string name="typeface"></string>
+    <string name="typeface2"></string>
 </resources>

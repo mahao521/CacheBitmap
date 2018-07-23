@@ -1,0 +1,16 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bitmap.database.view.RecommandChildFragment">
+
+    <include
+        android:id="@+id/am_ptr_framelayout"
+        layout="@layout/ptr_recyclerview_uiconponent"/>
+
+    <include
+        android:id="@+id/am_empty_view"
+        layout="layout/view_empty"
+        android:visibility="gone"/>
+
+</RelativeLayout>

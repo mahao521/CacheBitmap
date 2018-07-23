@@ -1,6 +1,7 @@
 package com.bitmap.cachebitmap.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -28,6 +30,10 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
     private SeekBar mSeekBar;
     private WindowManager mWindowManager;
     private View mView;
+    private Boolean isShow = false;
+    private RulerView mRulerView;
+    private ImageView mImgeBit;
+    private RevertView mRevertView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +62,10 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         },0,1000);
-        SlidingPanel slidingPanel = findViewById(R.id.slide_panel);
+
+        mRulerView = findViewById(R.id.view_ruler);
+        mImgeBit = findViewById(R.id.img_test);
+        mRevertView = findViewById(R.id.view_revert);
     }
 
     @Override
@@ -66,7 +75,9 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
             mTimer.cancel();
             mTimer = null;
         }
-        mWindowManager.removeView(mView);
+        if(mWindowManager!= null){
+            mWindowManager.removeView(mView);
+        }
     }
 
     @Override
@@ -74,7 +85,14 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.btn_click:
                 mSeekBar.incrementProgressBy(5);
-                makeView();
+                Bitmap bitmap = mRulerView.getBitmap();
+                mImgeBit.setImageBitmap(bitmap);
+                if (!isShow){
+                    makeView();
+                }else {
+                    mWindowManager.removeView(mView);
+                }
+                isShow = !isShow;
                 break;
         }
     }
@@ -97,8 +115,20 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 Toast.makeText(ViewActivity.this,"弹出对话框",Toast.LENGTH_SHORT).show();
+                getViewWH();
             }
         });
+    }
+
+    /**
+     *  获取宽高
+     */
+    public void getViewWH(){
+        SlidingPanel slidingPanel = findViewById(R.id.slide_panel);
+        MySlidePanel mySlidePanel = findViewById(R.id.slide_my_panel);
+        mySlidePanel.measure(0,0);
+        Log.d(TAG, "onCreate : " + mySlidePanel.getMeasuredHeight() + "  measure:" + mySlidePanel.getMeasuredWidth());
+        Log.d(TAG, "onCreate : " + mySlidePanel.getHeight() + "  measure:" + mySlidePanel.getWidth());
     }
 
 }

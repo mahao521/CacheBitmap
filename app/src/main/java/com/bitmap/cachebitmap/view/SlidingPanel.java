@@ -14,7 +14,6 @@ import android.widget.Scroller;
 /**
  * Created by Administrator on 2018/6/15.
  */
-
 public class SlidingPanel extends RelativeLayout {
     private Context context;
     private FrameLayout leftMenu;
@@ -60,7 +59,6 @@ public class SlidingPanel extends RelativeLayout {
         addView(middleMenu);
         addView(rightMenu);
         addView(middleMask);
-
 
         middleMask.setAlpha(0);
     }
@@ -115,6 +113,7 @@ public class SlidingPanel extends RelativeLayout {
             return true;
         }
         if (isHorizontalScroll) {
+            getParent().requestDisallowInterceptTouchEvent(true);
             switch (ev.getActionMasked()) {
                 case MotionEvent.ACTION_MOVE:
                     int curScrollX = getScrollX();
@@ -160,12 +159,12 @@ public class SlidingPanel extends RelativeLayout {
                     break;
             }
         } else {
+            getParent().requestDisallowInterceptTouchEvent(false);
             switch (ev.getActionMasked()) {
                 case MotionEvent.ACTION_UP:
                     isHorizontalScroll = false;
                     isSlideCompete = false;
                     break;
-
                 default:
                     break;
             }

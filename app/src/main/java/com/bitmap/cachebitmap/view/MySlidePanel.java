@@ -17,7 +17,6 @@ import android.widget.Scroller;
 /**
  * Created by Administrator on 2018/6/21.
  */
-
 public class MySlidePanel extends RelativeLayout {
 
     private static final String TAG = "MySlidePanel";
@@ -27,6 +26,10 @@ public class MySlidePanel extends RelativeLayout {
     private int touchSlop;
     private Scroller mScroller ;
     float downX = 0,downY = 0;
+    public static final int STATE_DEAULT= -1;
+    public static final int STATE_HORIZONTAL = 1;
+    public static final int STATE_VERTICAL = 2;
+    private int state = STATE_DEAULT;
 
     public MySlidePanel(Context context) {
         this(context,null);
@@ -94,7 +97,6 @@ public class MySlidePanel extends RelativeLayout {
             case MotionEvent.ACTION_DOWN:
                 downX = ev.getX();
                 downY = ev.getY();
-                getParent().requestDisallowInterceptTouchEvent(true);
                 Log.d(TAG,"down---" + downX + "..." + downY);
                return true;
             case MotionEvent.ACTION_MOVE:
@@ -103,14 +105,23 @@ public class MySlidePanel extends RelativeLayout {
                 Log.d(TAG,"move---" + currentX + "..." + currentY);
                 float distanceX = currentX - downX;
                 float distanceY = currentY - downY;
-                if(Math.abs(distanceX) > touchSlop && Math.abs(currentX) > Math.abs(distanceY)){//可以滑动
+                if(state == -1){ //初始状态先判断方向
+                    if(Math.abs(distanceX) > touchSlop && Math.abs(distanceX) > Math.abs(distanceY)){//可以滑动
+                        state = STATE_HORIZONTAL;
+                        getParent().requestDisallowInterceptTouchEvent(true);
+                    }else if(Math.abs(distanceY) > touchSlop && Math.abs(distanceY) > Math.abs(distanceX)){
+                        state = STATE_VERTICAL;
+                        getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                }
+                if(state == 1){ //当前是滑动状态
                     Log.d(TAG,"正在滑动。。。。" + mLayoutLeft.getWidth());
                     int scrollX = getScrollX();
-                   float realX = -distanceX + scrollX;
+                    float realX = -distanceX + scrollX;
                     if(Math.abs(realX) > mLayoutLeft.getWidth()){
                         break;
                     }
-                   scrollTo((int) realX,0);
+                    scrollTo((int) realX,0);
                 }
                 downX = currentX;
                 downY = currentY;
@@ -130,6 +141,7 @@ public class MySlidePanel extends RelativeLayout {
                     mScroller.startScroll(currScrX,0,-currScrX,0,200);
                 }
                 invalidate();
+                state = STATE_DEAULT;
                 break;
         }
         return super.dispatchTouchEvent(ev);

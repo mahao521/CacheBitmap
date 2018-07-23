@@ -4,7 +4,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CacheBitmap.iml" filepath="$PROJECT_DIR$/CacheBitmap.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/beandatabase/beandatabase.iml" filepath="$PROJECT_DIR$/beandatabase/beandatabase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/database/database.iml" filepath="$PROJECT_DIR$/database/database.iml" />
       <module fileurl="file://$PROJECT_DIR$/handler/handler.iml" filepath="$PROJECT_DIR$/handler/handler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/skin/skin.iml" filepath="$PROJECT_DIR$/skin/skin.iml" />
     </modules>
   </component>
 </project>
